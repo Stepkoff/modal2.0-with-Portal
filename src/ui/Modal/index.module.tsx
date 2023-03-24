@@ -1,9 +1,11 @@
-import React, {useEffect, useState, useRef} from "react";
-import Portal from "../Portal";
+import React, {useEffect, useRef, useState} from 'react';
+import {CSSTransition } from 'react-transition-group';
 import s from './index.module.sass';
-import {CSSTransition} from 'react-transition-group';
 import animationStyles from './animations.module.sass';
-const ANIMATION_TIME = 200;
+import {GrFormClose} from 'react-icons/gr'
+import Portal from "../Portal";
+
+const ANIMATION_TIME = 200
 
 const useMount = ({isOpened}: {isOpened: boolean}) => {
   const [mounted, setMounted] = useState(false);
@@ -12,8 +14,8 @@ const useMount = ({isOpened}: {isOpened: boolean}) => {
       setMounted(true);
     } else if (!isOpened && mounted) {
       setTimeout(() => {
-        setMounted(false)
-      }, ANIMATION_TIME)
+        setMounted(false);
+      }, ANIMATION_TIME);
     }
   }, [isOpened])
   return {mounted}
@@ -42,6 +44,12 @@ export const Layout = ({ onClose, children, isOpened }: layoutProps) => {
   const contentRef = useRef(null);
   const [animationIn, setAnimationIn] = useState(false);
   useEffect(() => {
+    document.body.classList.add('modalOpen')
+    return () => {
+      document.body.classList.remove('modalOpen')
+    }
+  }, [])
+  useEffect(() => {
     setAnimationIn(isOpened);
   }, [isOpened]);
   return (
@@ -65,6 +73,7 @@ export const Layout = ({ onClose, children, isOpened }: layoutProps) => {
         classNames={contentAnimation}
       >
         <div ref={contentRef} className={s.content}>
+          <div className={s.closeBtn} onClick={onClose}><GrFormClose size={30}/></div>
           {children}
         </div>
       </CSSTransition>
@@ -77,9 +86,11 @@ interface ModalProps {
   isOpened: boolean
   onClose: () => void
 }
-const Modal = ({children, onClose, isOpened}: ModalProps) => {
-  const {mounted} = useMount({isOpened});
-  if(!mounted) return null
+const Modal = ({children, isOpened, onClose}: ModalProps) => {
+  const { mounted } = useMount({ isOpened });
+  if (!mounted) {
+    return null;
+  }
   return (
     <Portal>
       <Layout onClose={onClose} isOpened={isOpened}>
