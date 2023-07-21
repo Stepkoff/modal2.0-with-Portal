@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.sass';
-import Modal from "../ui/Modal/index.module";
+import {Modal} from "../ui/Modal";
 
 const App = () => {
   const [modalOpened, setModalOpened] = useState(false);

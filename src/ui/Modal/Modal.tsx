@@ -86,7 +86,7 @@ interface ModalProps {
   isOpened: boolean
   onClose: () => void
 }
-const Modal = ({children, isOpened, onClose}: ModalProps) => {
+export const Modal = ({children, isOpened, onClose}: ModalProps) => {
   const { mounted } = useMount({ isOpened });
   if (!mounted) {
     return null;
@@ -100,4 +100,3 @@ const Modal = ({children, isOpened, onClose}: ModalProps) => {
   );
 };
 
-export default Modal;
